@@ -53,10 +53,21 @@ export class ObjectEntryApiHelper {
 		);
 	}
 
-	async getObjectEntryByExternalReferenceCode(
-		applicationName: string,
-		externalReferenceCode: string
-	) {
+	async getObjectEntryByExternalReferenceCode({
+		applicationName,
+		externalReferenceCode,
+		nestedField,
+	}: {
+		applicationName: string;
+		externalReferenceCode: string;
+		nestedField?: string;
+	}) {
+		if (nestedField) {
+			return this.apiHelpers.get(
+				`${this.apiHelpers.baseUrl}${applicationName}/by-external-reference-code/${externalReferenceCode}?nestedFields=${nestedField}`
+			);
+		}
+
 		return this.apiHelpers.get(
 			`${this.apiHelpers.baseUrl}${applicationName}/by-external-reference-code/${externalReferenceCode}`
 		);
@@ -117,6 +128,22 @@ export class ObjectEntryApiHelper {
 		return this.apiHelpers.post(
 			`${this.apiHelpers.baseUrl}${applicationName}/`,
 			{data}
+		);
+	}
+
+	async putByExternalReferenceCodeCurrentExternalReferenceCodeObjectRelationshipNameRelatedExternalReferenceCode({
+		applicationName,
+		currentExternalReferenceCode,
+		objectRelationshipName,
+		relatedExternalReferenceCode,
+	}: {
+		applicationName: string;
+		currentExternalReferenceCode: string;
+		objectRelationshipName: string;
+		relatedExternalReferenceCode: string;
+	}): Promise<ObjectEntry> {
+		return this.apiHelpers.put(
+			`${this.apiHelpers.baseUrl}${applicationName}/by-external-reference-code/${currentExternalReferenceCode}/${objectRelationshipName}/${relatedExternalReferenceCode}`
 		);
 	}
 
